@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 15f; // 이동 속도
+    public float speed = 10f; // 이동 속도
     private Vector2 moveInput; // 이동 입력값
 
     private Rigidbody rb; // Rigidbody 컴포넌트 참조용 객체
