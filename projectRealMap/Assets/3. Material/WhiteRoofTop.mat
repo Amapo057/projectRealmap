@@ -71,6 +71,7 @@ Material:
     - _Emission_Intensity: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    m_Colors:
+    - _BuildingColor: {r: 0.87602353, g: 0.9622642, b: 0.94037384, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

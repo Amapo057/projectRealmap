@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System.Data;
 using UnityEngine.UIElements;
 using Unity.Android.Gradle.Manifest;
+using System.Collections;
+using Unity.Android.Gradle;
 
 public class ProceduralBuildingGenerator : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class ProceduralBuildingGenerator : MonoBehaviour
     public class BuildingStyle
     {
         public string styleName;
-        public int buildingType;
+        public BuildingType buildingType;
         [Header("옥상 설정")]
         public Material roofMaterial;
         public float roofUVScale = 0.3f;
@@ -45,19 +47,23 @@ public class ProceduralBuildingGenerator : MonoBehaviour
         [Header("조립용 프리팹 에셋")]
         public List<GameObject> doorPrefab;
         public List<GameObject> windowPrefab;
-        public List<GameObject> acPrefab;
+        public List<GameObject> otherPrefab;
 
-        [Header("창문 배치 규칙 (Window Placement)")]
+        [Header("창문 배치")]
     
-        [Tooltip("창문과 창문 사이의 가로 간격(미터)입니다. 좁을수록 촘촘해집니다.")]
+        [Tooltip("창문 간격")]
         public float windowSpacing = 3.0f;
 
-        [Tooltip("창문이 생성될 확률입니다 (0.0 ~ 1.0). 1이면 꽉 채우고, 0.7이면 가끔 빈 벽이 생겨 자연스럽습니다.")]
+        [Tooltip("창문 생성 확률")]
         [Range(0f, 1f)]
         public float windowSpawnChance = 1f;
 
-        [Tooltip("몇 층부터 창문을 달기 시작할지 정합니다. (예: 1로 설정하면 0층(1층)은 건너뛰고 2층부터 달림)")]
+        [Tooltip("창문 시작할 층")]
         public int startingWindowFloor = 0;
+
+        [Header("난간 설정")]
+        public float parapetHeight = 0.5f;
+        public int parapetRowIndex = 2;
     }
 
     [SerializeField] private List<BuildingStyle> buildingStylesList = new List<BuildingStyle>();
@@ -88,8 +94,8 @@ public class ProceduralBuildingGenerator : MonoBehaviour
     // 시트 간격
     private const float PADDING = 16f;
     private const float TOTAL_TEX_HEIGHT = 4096;
-    private float floorHeight = 3.3f;   // 한 층의 높이
-    private Vector2[] RowUV = new Vector2[7];
+    private float floorHeight = 4f;   // 한 층의 높이
+    private Vector2[] RowVRange = new Vector2[7];
 // }
 // /*
     public void Start()
@@ -103,7 +109,7 @@ public class ProceduralBuildingGenerator : MonoBehaviour
             float vMin = vMax - ROW_HEIGHT;
 
             // 좌표를 최대 높이로 나눠 UV에 사용하는 0.0~1.0 사이의 좌표로 변환
-            RowUV[i] = new Vector2(vMin / TOTAL_TEX_HEIGHT, vMax / TOTAL_TEX_HEIGHT);
+            RowVRange[i] = new Vector2(vMin / TOTAL_TEX_HEIGHT, vMax / TOTAL_TEX_HEIGHT);
         }
         // paser코드에서 함수 호출해 json 구조체로 변환
         List<BuildingData> buildingList = jsonPaser.LoadAndParseJson<BuildingData>(fileName);
@@ -116,14 +122,30 @@ public class ProceduralBuildingGenerator : MonoBehaviour
         // }
 
         // 건물 생성 코드 호출
-        int generationCount = Mathf.Min(50, buildingList.Count);        
+        StartCoroutine(CreateBuildingCoroutine(buildingList));
+    }
+
+    private IEnumerator CreateBuildingCoroutine(List<BuildingData> buildingList)
+    {
+        int generationCount = Mathf.Min(5000, buildingList.Count);
+
+        int batchSize = 50;
 
         for (int i = 0; i < generationCount; i++)
         {
-            int randomStyle = Random.Range(0, 2); 
-            CreateSingleBuilding(buildingList[i], i, randomStyle);
-        }
+            int styleNumber = 0;
+            if (System.Enum.TryParse<BuildingType>(buildingList[i].type, true, out BuildingType buildingType))
+            {
+                styleNumber = (int)buildingType;
+                if (styleNumber > 4){styleNumber = 4;}
+            }
+            CreateSingleBuilding(buildingList[i], i, styleNumber);
 
+            if (i % batchSize == 0)
+            {
+                yield return null; // 다음 프레임까지 쉼
+            }
+        }
     }
 
     private void CreateSingleBuilding(BuildingData buildingData, int index, int currentStyle)
@@ -180,112 +202,66 @@ public class ProceduralBuildingGenerator : MonoBehaviour
             // 만약 베이스 높이가 있다면 디딤돌 생성
             if (style.baseHeight > 0f)
             {
-                int vIndexBase = vertices.Count;
-                float nextY = currentY + style.baseHeight;
-
-                // 디딤돌 높이에 맞춰 꼭짓점 생성
-                // 하단 좌우
-                vertices.Add(p1 + Vector3.up * currentY);
-                vertices.Add(p2 + Vector3.up * currentY);
-                // 디딤돌 높이를 저장한 nextY를 활용해 상화 좌우 꼭지점 생성
-                vertices.Add(p1 + Vector3.up * nextY);
-                vertices.Add(p2 + Vector3.up * nextY);
-
-                // 벽에 uv 적용
-                Vector2 baseUV = RowUV[style.baseRowIndex];
-                uvs.Add(new Vector2(0, baseUV.x));
-                uvs.Add(new Vector2(tilingX, baseUV.x));
-                uvs.Add(new Vector2(0, baseUV.y));
-                uvs.Add(new Vector2(tilingX, baseUV.y));
-
-                // 시계방향으로 점을 연결해 삼각형으로 면 만들기
-                // 유니티는 꼭지점에서 면이 시계방향으로 회전해야 앞면이라고 인식
-                // 전치리한 데이터가 반시계로 들어와서 반시계로 만들어 실질적으로 시계방향으로 면 생성
-                wallTriangles.Add(vIndexBase);     wallTriangles.Add(vIndexBase + 1); wallTriangles.Add(vIndexBase + 2); 
-                wallTriangles.Add(vIndexBase + 2); wallTriangles.Add(vIndexBase + 1); wallTriangles.Add(vIndexBase + 3);
-
-                // 현재 Y 높이 기록
+                float nextY = style.baseHeight;
+                CreateWall(currentY, nextY, tilingX, p1, p2, RowVRange[style.baseRowIndex], ref vertices, ref uvs, ref wallTriangles);
                 currentY = nextY;
             }
 
             // 메인 벽 생성
             for (int floor = 0; floor < buildingData.floors; floor++)
             {
-                // vertices는 계속 증가하니 새로 변수 생성
-                int vIndexWall = vertices.Count;
                 // 층 경계선 만큼의 높이를 빼고 벽 최대 높이 설정
-                float wallTopY = currentY + (floorHeight - style.trimHeight);
-
-                // 하단 좌우
-                vertices.Add(p1 + Vector3.up * currentY);
-                vertices.Add(p2 + Vector3.up * currentY);
-                // 상단 좌우
-                vertices.Add(p1 + Vector3.up * wallTopY);
-                vertices.Add(p2 + Vector3.up * wallTopY);
-
-                // 벽에 uv 적용
-                Vector2 wallUV = RowUV[style.wallRowIndex];
-                uvs.Add(new Vector2(0, wallUV.x));
-                uvs.Add(new Vector2(tilingX, wallUV.x));
-                uvs.Add(new Vector2(0, wallUV.y));
-                uvs.Add(new Vector2(tilingX, wallUV.y));
-
-                wallTriangles.Add(vIndexWall);     wallTriangles.Add(vIndexWall + 1); wallTriangles.Add(vIndexWall + 2); 
-                wallTriangles.Add(vIndexWall + 2); wallTriangles.Add(vIndexWall + 1); wallTriangles.Add(vIndexWall + 3);
-                currentY = wallTopY;
+                float nextY = currentY + (floorHeight - style.trimHeight);
+                CreateWall(currentY, nextY, tilingX, p1, p2, RowVRange[style.wallRowIndex], ref vertices, ref uvs, ref wallTriangles);
+                currentY = nextY;
+                // 층간 띠 있다면 생성
+                if (style.trimHeight > 0f)
+                {
+                    float trimTopY = currentY + style.trimHeight;
+                    CreateWall(currentY, trimTopY, tilingX, p1, p2, RowVRange[style.trimRowIndex], ref vertices, ref uvs, ref wallTriangles);
+                    currentY = trimTopY;
+                }
             }
-            // 층간 띠 있다면 생성
-            if (style.trimHeight > 0f)
+            if (style.parapetHeight > 0f)
             {
-                int vIndexTrim = vertices.Count;
-                float trimTopY = currentY + style.trimHeight;
+                float nextY = currentY + style.parapetHeight;
+                Vector2 parapetUV = RowVRange[style.parapetRowIndex];
+                CreateWall(currentY, nextY, tilingX, p1, p2, parapetUV, ref vertices, ref uvs, ref wallTriangles);
+                
+                // 난간 안쪽 면 만들기
+                Vector3 forward = (p2 - p1).normalized;
+                Vector3 inwardNormal = Vector3.Cross(forward, Vector3.up).normalized;
 
-                vertices.Add(p1 + Vector3.up * currentY); // 띠 하단 좌
-                vertices.Add(p2 + Vector3.up * currentY); // 띠 하단 우
-                vertices.Add(p1 + Vector3.up * trimTopY); // 띠 상단 좌
-                vertices.Add(p2 + Vector3.up * trimTopY); // 띠 상단 우
+                // 아래쪽 꼭지점은 건물 안쪽 방향으로 밀어 넣어 바깥면과 유격 생성
+                Vector3 innerP1_Bottom = p1 - inwardNormal * 0.05f;
+                Vector3 innerP2_Bottom = p2 - inwardNormal * 0.05f;
 
-                // 층간 띠 UV 매핑
-                Vector2 trimUV = RowUV[style.trimRowIndex];
-                uvs.Add(new Vector2(0, trimUV.x));
-                uvs.Add(new Vector2(tilingX, trimUV.x));
-                uvs.Add(new Vector2(0, trimUV.y));
-                uvs.Add(new Vector2(tilingX, trimUV.y));
+                // 위쪽 꼭지점은 바깥면과 동일하게 사용
+                Vector3 innerP1_Top = p1;
+                Vector3 innerP2_Top = p2;
 
-                wallTriangles.Add(vIndexTrim);     wallTriangles.Add(vIndexTrim + 1); wallTriangles.Add(vIndexTrim + 2); 
-                wallTriangles.Add(vIndexTrim + 2); wallTriangles.Add(vIndexTrim + 1); wallTriangles.Add(vIndexTrim + 3);
+                int vIndexInner = vertices.Count;
 
-                currentY = trimTopY; // 현재 고도를 띠 꼭대기(즉, 이 층의 완전한 천장)로 이동
+                // 계산한 점을 이용해 점 생성
+                vertices.Add(innerP1_Bottom + Vector3.up * currentY);
+                vertices.Add(innerP2_Bottom + Vector3.up * currentY);
+                vertices.Add(innerP1_Top + Vector3.up * nextY);
+                vertices.Add(innerP2_Top + Vector3.up * nextY);
+
+                uvs.Add(new Vector2(0, parapetUV.x));
+                uvs.Add(new Vector2(tilingX, parapetUV.x));
+                uvs.Add(new Vector2(0, parapetUV.y));
+                uvs.Add(new Vector2(tilingX, parapetUV.y));
+
+                // 삼각형 안쪽 면 엮기 (카메라가 옥상 내부를 봐야 하므로 반시계 정렬 저격용 순서)
+                wallTriangles.Add(vIndexInner);     wallTriangles.Add(vIndexInner + 2); wallTriangles.Add(vIndexInner + 1);
+                wallTriangles.Add(vIndexInner + 1); wallTriangles.Add(vIndexInner + 2); wallTriangles.Add(vIndexInner + 3);
             }
-
-            // 2. 규칙 기반 소품(프랍) 배치 로직
-            // 규칙 A: 처음으로 만드는 벽(index 0)의 중앙에 '문' 배치
-            // if (i == 0)
-            // {
-            //     Vector3 doorPos = (p1 + p2) / 2f; // 1층 바닥 중앙
-            //     GameObject chosenDoor = doorPrefabs[Random.Range(0, doorPrefabs.Length)];
-            //     Instantiate(chosenDoor, doorPos, wallRotation, buildingObj.transform);
-            // }
-
-            // // 층별 창문 및 실외기 루프
-            // for (int f = 0; f < data.floors; f++)
-            // {
-            //     float currentFloorCenterY = (f * floorHeight) + (floorHeight / 2f);
-            //     Vector3 wallCenterAtFloor = (p1 + p2) / 2f + Vector3.up * currentFloorCenterY;
-
-            //     // 규칙 B: 모든 벽 중간에 한 층에 하나씩 랜덤 창문 달기
-            //     GameObject chosenWindow = windowPrefabs[Random.Range(0, windowPrefabs.Length)];
-            //     GameObject windowInstance = Instantiate(chosenWindow, wallCenterAtFloor, wallRotation, buildingObj.transform);
-
-            //     // 규칙 C: 문 기준 왼쪽 벽(마지막 벽면 index로 가정)의 창문 아래에 실외기 달기
-            //     // 시계방향 데이터 구조에서 첫 번째 벽(정면 문)의 직전 벽(cornerCount - 1)이 외관상 왼쪽 벽이 됩니다.
-            //     if (i == cornerCount - 1 && acPrefab != null)
-            //     {
-            //         // 창문 기준 약간 아래(예: 0.8미터 하단)에 실외기 배치
-            //         Vector3 acPos = wallCenterAtFloor + Vector3.down * 0.8f;
-            //         Instantiate(acPrefab, acPos, wallRotation, buildingObj.transform);
-            //     }
-            // }
+            if (style.windowSpawnChance > 0)
+            {
+                PlaceWindowsOnWall(buildingData, style, buildingObj, p1, p2, wallNormal, wallRotation);
+            }
+            
         }
 
         int roofVIndexStart = vertices.Count;
@@ -320,7 +296,7 @@ public class ProceduralBuildingGenerator : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = vertices.ToArray();
         mesh.uv = uvs.ToArray();
-        // 메시가 2개라 설정
+        // 천장과 벽을 구분하기 위해 서브메쉬 2개로 분리
         mesh.subMeshCount = 2;
 
         // 들어있는 버텍스들을 triangles에 들어있는 순서를 이용해 삼각형으로 조립
@@ -343,8 +319,120 @@ public class ProceduralBuildingGenerator : MonoBehaviour
             buildingMaterials[1] = style.roofMaterial;
 
             meshRenderer.materials = buildingMaterials;
+
+            MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
+            meshRenderer.GetPropertyBlock(propBlock);
+
+            // 랜덤 색상 더해 조절
+            float r = Random.Range(0.9f, 1.0f);
+            float g = Random.Range(0.9f, 1.0f);
+            float b = Random.Range(0.9f, 1.0f);
+
+            propBlock.SetColor("_BuildingColor", new Color(r, g, b, 1.0f));
+
+            meshRenderer.SetPropertyBlock(propBlock);
+
+            // 건물에 컨트롤러 코드 추가
+            BuildingController controller = buildingObj.AddComponent<BuildingController>();
+            controller.RegisterRenderer(meshRenderer);
+
+            // 만들어진 메쉬 모양 사용해 콜라이더 추가
+            MeshCollider meshCollider = buildingObj.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = mesh;
         }
         meshFilter.mesh = mesh;
+    }
+
+    // 현재 Y높이, 목표 Y 높이, 마테리얼 X비율, 첫번째 점, 두번째 점, 사용할 uv 범위, 꼭지점 리스트, uv리스트, 삼각형 생성 순서
+    private void CreateWall(float currentY, float nextY, float tilingX, Vector3 p1, Vector3 p2, Vector2 uvRange, ref List<Vector3> vertices, ref List<Vector2> uvs, ref List<int> wallTriangles)
+    {
+        // 계속해서 꼭지점 갯수가 늘어나니 벽을 생성 할 때마다 업데이트
+        int vIndex = vertices.Count;
+
+        // 목표 높이에 맞춰 꼭짓점 생성
+        // 하단 좌우
+        vertices.Add(p1 + Vector3.up * currentY);
+        vertices.Add(p2 + Vector3.up * currentY);
+        vertices.Add(p1 + Vector3.up * nextY);
+        vertices.Add(p2 + Vector3.up * nextY);
+
+        // 벽에 uv 적용
+        Vector2 wallUV = uvRange;
+        uvs.Add(new Vector2(0, wallUV.x));
+        uvs.Add(new Vector2(tilingX, wallUV.x));
+        uvs.Add(new Vector2(0, wallUV.y));
+        uvs.Add(new Vector2(tilingX, wallUV.y));
+
+        // 시계방향으로 점을 연결해 삼각형으로 면 만들기
+        // 유니티는 꼭지점에서 면이 시계방향으로 회전해야 앞면이라고 인식
+        // 전치리한 데이터가 반시계로 들어와서 반시계로 만들어 실질적으로 시계방향으로 면 생성
+        wallTriangles.Add(vIndex); wallTriangles.Add(vIndex + 1); wallTriangles.Add(vIndex + 2);
+        wallTriangles.Add(vIndex + 2); wallTriangles.Add(vIndex + 1); wallTriangles.Add(vIndex + 3);
+    }
+    // 창문 생성 코드
+    private void PlaceWindowsOnWall(
+    BuildingData buildingData,
+    BuildingStyle style,
+    GameObject buildingObj,
+    Vector3 p1,
+    Vector3 p2,
+    Vector3 wallNormal,
+    Quaternion wallRotation
+    )
+    {
+        if (style.windowPrefab == null || style.windowPrefab.Count == 0)
+            return;
+
+        float wallWidth = Vector3.Distance(p1, p2);
+
+        // 너무 짧은 벽에는 창문 생략
+        if (wallWidth < style.windowSpacing)
+            return;
+
+        Vector3 wallDir = (p2 - p1).normalized;
+
+        // 벽 길이에 따라 창문 개수 계산
+        int windowCount = Mathf.FloorToInt(wallWidth / style.windowSpacing);
+
+        if (windowCount <= 0)
+            return;
+
+        // 양끝 모서리에 너무 붙지 않도록 중앙 정렬용 여백 계산
+        float usedWidth = (windowCount - 1) * style.windowSpacing;
+        float startOffset = (wallWidth - usedWidth) * 0.5f;
+
+        for (int floor = style.startingWindowFloor; floor < buildingData.floors; floor++)
+        {
+            float y = floor * floorHeight + floorHeight * 0.55f;
+
+            for (int w = 0; w < windowCount; w++)
+            {
+                if (Random.value > style.windowSpawnChance)
+                    continue;
+
+                float distanceAlongWall = startOffset + w * style.windowSpacing;
+
+                Vector3 pos = p1 + wallDir * distanceAlongWall;
+                pos += Vector3.up * y;
+
+                // z-fighting 방지: 벽 바깥쪽으로 살짝 띄움
+                pos += wallNormal * 0.05f;
+
+                GameObject chosenWindow = style.windowPrefab[
+                    Random.Range(0, style.windowPrefab.Count)
+                ];
+
+                GameObject windowInstance = Instantiate(
+                    chosenWindow,
+                    pos,
+                    wallRotation,
+                    buildingObj.transform
+                );
+
+                // 필요하면 스케일 랜덤화
+                // windowInstance.transform.localScale *= Random.Range(0.9f, 1.1f);
+            }
+        }
     }
 }
 // */

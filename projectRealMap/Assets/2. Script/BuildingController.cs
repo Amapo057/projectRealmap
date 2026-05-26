@@ -3,32 +3,38 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour
 {
-    private List<Material> materialsList = new List<Material>();
+    private List<MeshRenderer> rendererList = new List<MeshRenderer>();
 
-    private readonly string emissionController = "EmissionIntensity";
+    private readonly string emissionController = "_EmissionIntensity";
 
     public void RegisterRenderer(MeshRenderer renderer)
     {
         // 렌더러 있는지 검사
         if (renderer == null) return;
         // 임시로 마테리얼 잡음
-        foreach (var mat in renderer.materials)
+        if (!rendererList.Contains(renderer))
         {
-            // 마테리얼에 에미션 변경 변수가 있다면 리스트에 마테리얼 저장
-            if (mat.HasProperty(emissionController))
-            {
-                materialsList.Add(mat);
-            }
+            rendererList.Add(renderer);
         }
     }
 
     public void SetEmission(float intensity)
     {
-        foreach(var mat in materialsList)
-        {
-            // 마테리얼의 emmision값을 설정한 값으로 변경
-            mat.SetFloat(emissionController, intensity);
+        // 혹시 렌더러가 비어있으면 돌려보냄
+        if (rendererList.Count == 0) return;
 
+        MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
+        
+        foreach(MeshRenderer renderer in rendererList)
+        {
+            // 비어있는지 검사
+            if (renderer == null) continue;
+
+            renderer.GetPropertyBlock(propBlock);
+
+            propBlock.SetFloat(emissionController, intensity);
+
+            renderer.SetPropertyBlock(propBlock);
         }
     }
     
