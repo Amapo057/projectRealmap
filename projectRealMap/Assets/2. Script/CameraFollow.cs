@@ -2,48 +2,46 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Header("���� ���")]
+    [Header("따라갈 대상")]
     public Transform target;
 
-    [Header("ī�޶� �Ÿ�")]
+    [Header("카메라 거리")]
     public float distance = 16f;
 
-    [Header("ī�޶� ����")]
+    [Header("카메라 높이")]
     public float height = 10f;
 
-    [Header("ī�޶� �¿� ����")]
+    [Header("카메라 좌우 각도")]
     public float yaw = 0f;
 
-    [Header("���콺 ȸ�� �ӵ�")]
+    [Header("마우스 회전 속도")]
     public float mouseSensitivity = 3f;
 
-    [Header("�ε巴�� ���󰡴� ����")]
+    [Header("부드럽게 따라가는 정도")]
     public float smoothSpeed = 8f;
 
-    [Header("�ٶ� ����")]
+    [Header("바라볼 높이")]
     public float lookHeight = 1.5f;
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         if (target == null)
         {
             return;
         }
 
-        // ���콺 ������ ��ư�� ���� ���¿����� ī�޶� ȸ��
+        // 마우스 오른쪽 버튼을 누른 상태에서만 카메라 회전
         if (Input.GetMouseButton(1))
         {
             float mouseX = Input.GetAxis("Mouse X");
             yaw += mouseX * mouseSensitivity;
         }
 
-        // �߿�:
-        // Player�� forward, rotation�� ���� ������� �ʽ��ϴ�.
-        // �׷��� W/S�� ������ ī�޶� Player �ڷ� �ڵ� �̵����� �ʽ��ϴ�.
-        Quaternion fixedRotation = Quaternion.Euler(0f, yaw, 0f);
+        // Player의 회전은 사용하지 않습니다.
+        // 카메라는 저장된 yaw 값과 target 위치만 사용합니다.
+        Quaternion cameraRotation = Quaternion.Euler(0f, yaw, 0f);
 
-        Vector3 offset = fixedRotation * new Vector3(0f, height, -distance);
-
+        Vector3 offset = cameraRotation * new Vector3(0f, height, -distance);
         Vector3 desiredPosition = target.position + offset;
 
         transform.position = Vector3.Lerp(

@@ -2,43 +2,43 @@ using UnityEngine;
 
 public class ElectricWireEffect : MonoBehaviour
 {
-    [Header("���� ���� ��ġ")]
-    [Tooltip("����θ� Player �߽��� �������� ���Ⱑ ���ɴϴ�. Sphere�� ������ Sphere ��ġ �������� ���Ⱑ ���ɴϴ�.")]
+    [Header("전기 기준 위치")]
+    [Tooltip("비워두면 Player 중심을 기준으로 전기가 나옵니다. Sphere를 넣으면 Sphere 위치 기준으로 전기가 나옵니다.")]
     public Transform effectCenter;
 
-    [Header("���� �⺻ ����")]
+    [Header("전기 기본 설정")]
     public int electricLineCount = 12;
     public int electricityPoints = 4;
 
-    [Header("�� �ֺ� ����ũ")]
+    [Header("몸 주변 스파크")]
     public float bodySparkMinLength = 0.35f;
     public float bodySparkMaxLength = 0.85f;
 
-    [Header("�̵� ���� ����")]
+    [Header("이동 꼬리 전기")]
     public float tailMinLength = 0.6f;
     public float tailMaxLength = 1.2f;
 
-    [Header("���� �β�")]
+    [Header("전기 두께")]
     public float electricStartWidth = 0.08f;
     public float electricEndWidth = 0.025f;
 
-    [Header("���� ������ �ӵ�")]
-    [Tooltip("���� �������� �̵� �� ���� ����� �� ������ �ٲ�ϴ�.")]
+    [Header("전기 지지직 속도")]
+    [Tooltip("값이 높을수록 이동 중 전기 모양이 더 빠르게 바뀝니다.")]
     public float movingFlickerRate = 55f;
 
-    [Tooltip("������ ���� �� ����ũ�� �ٲ�� �ӵ��Դϴ�.")]
+    [Tooltip("가만히 있을 때 스파크가 바뀌는 속도입니다.")]
     public float idleFlickerRate = 35f;
 
-    [Header("���� ���� ����")]
+    [Header("전기 꺾임 강도")]
     public float lightningJitter = 0.32f;
     public float tailScatterAmount = 0.18f;
     public float bodyScatterAmount = 0.22f;
 
-    [Header("���� �ٴ� ����")]
+    [Header("몸에 붙는 정도")]
     public float tailStartDistance = 0.03f;
 
-    [Header("�̵� ���� ����")]
-    [Tooltip("�� ������ ���� �����̸� �̵� �� ����� �Ǵ��մϴ�.")]
+    [Header("이동 감지 설정")]
+    [Tooltip("이 값보다 많이 움직이면 이동 중 전기로 판단합니다.")]
     public float movementDetectThreshold = 0.00001f;
 
     private LineRenderer[] electricLines;
@@ -47,7 +47,6 @@ public class ElectricWireEffect : MonoBehaviour
     private Vector3 lastCenterWorldPosition;
     private Vector3 lastMoveDirectionLocal = Vector3.forward;
 
-    private int lastMovingTick = -1;
     private int lastIdleTick = -1;
 
     private void Start()
@@ -84,7 +83,7 @@ public class ElectricWireEffect : MonoBehaviour
 
         if (originalLine == null)
         {
-            Debug.LogWarning("ElectricWireEffect: Player�� Line Renderer�� �����ϴ�.");
+            Debug.LogWarning("ElectricWireEffect: Player에 Line Renderer가 없습니다.");
             return;
         }
 
@@ -163,7 +162,6 @@ public class ElectricWireEffect : MonoBehaviour
 
         int currentTick = Mathf.FloorToInt(Time.time * movingFlickerRate);
 
-        // �̵� �߿��� ��ư �Է°� ������� �׻� ���� ��ġ �������� ���⸦ �ٽ� �׸��ϴ�.
         DrawMovingElectricity(currentTick);
     }
 
@@ -263,15 +261,12 @@ public class ElectricWireEffect : MonoBehaviour
 
             DrawLightningLine(line, startPos, endPos, sideAxis, upAxis, seed, tick, true);
         }
-
-        lastMovingTick = tick;
     }
 
     private void DrawIdleElectricityAlways()
     {
         int currentTick = Mathf.FloorToInt(Time.time * idleFlickerRate);
 
-        // ���� Tick�̸� ����� ���������� ��ġ�� ��� ���� ��ġ �������� �پ� �ֽ��ϴ�.
         if (currentTick == lastIdleTick)
         {
             return;
@@ -412,7 +407,6 @@ public class ElectricWireEffect : MonoBehaviour
         }
     }
 
-    // ���� �ڵ� ȣȯ��
     public void PlayMovingElectricity(float moveInput)
     {
         if (moveInput > 0f)
@@ -425,13 +419,11 @@ public class ElectricWireEffect : MonoBehaviour
         }
     }
 
-    // ���� �ڵ� ȣȯ��
     public void PlayMovingElectricity(Vector3 moveDirection)
     {
         DrawMovingElectricityByMovement(moveDirection);
     }
 
-    // ���� �ڵ� ȣȯ��
     public void PlayIdleElectricity()
     {
         DrawIdleElectricityAlways();

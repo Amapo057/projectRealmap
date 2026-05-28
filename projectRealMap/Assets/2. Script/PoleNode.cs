@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class PoleNode : MonoBehaviour
 {
-    [Header("�� �����뿡�� �̵� ������ ���� ����")]
+    [Header("이 전봇대에서 이동 가능한 연결 정보")]
     public List<WireConnection> connections = new List<WireConnection>();
 
-    [Header("���� ��ġ")]
-    [Tooltip("����θ� �� ������Ʈ�� ��ġ�� ���� ��ġ�� ����մϴ�.")]
+    [Header("도착 위치")]
+    [Tooltip("비워두면 이 오브젝트의 위치를 도착 위치로 사용합니다.")]
     public Transform movePoint;
 
     public Vector3 Position
@@ -64,7 +64,6 @@ public class PoleNode : MonoBehaviour
             }
 
             Vector3 end = connection.targetNode.Position;
-
             Gizmos.DrawLine(start, end);
         }
     }

@@ -3,18 +3,18 @@ using UnityEngine.Splines;
 
 public class ElectricPoleMover : MonoBehaviour
 {
-    [Header("���� �� �ִ� ������ ���")]
+    [Header("현재 서 있는 전봇대 노드")]
     [SerializeField] private PoleNode currentNode;
 
-    [Header("�̵� ����")]
+    [Header("이동 설정")]
     [SerializeField] private float moveSpeed = 8f;
 
-    [Tooltip("�Է� ����� �ĺ� ��� ������ �� �� �̻� ����ؾ� �̵��մϴ�.")]
+    [Tooltip("입력 방향과 후보 노드 방향이 이 값 이상 비슷해야 이동합니다.")]
     [Range(0f, 1f)]
     [SerializeField] private float directionThreshold = 0.8f;
 
-    [Header("�Է� ����")]
-    [Tooltip("����θ� ���� ���� WASD�� �̵��մϴ�. ī�޶� ������ ī�޶� ���� WASD�� �˴ϴ�.")]
+    [Header("입력 기준")]
+    [Tooltip("비워두면 월드 기준 WASD로 이동합니다. 카메라를 넣으면 카메라 기준 WASD가 됩니다.")]
     [SerializeField] private Transform cameraTransform;
 
     private WireConnection currentConnection;
