@@ -244,7 +244,6 @@ GameObject:
   - component: {fileID: 165725435}
   - component: {fileID: 165725434}
   - component: {fileID: 165725433}
-  - component: {fileID: 165725437}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -391,7 +390,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165725432}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7c1a5c4eb93d3d4f8cfb4eeca2591b6, type: 3}
   m_Name: 
@@ -414,22 +413,6 @@ Transform:
   - {fileID: 738803268}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &165725437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 165725432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c2b99272285054488884ffc7c6a339f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ElectricPoleMover
-  currentNode: {fileID: 687441123}
-  moveSpeed: 8
-  directionThreshold: 0.5
-  cameraTransform: {fileID: 171776439}
 --- !u!1 &171776436
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,53 +566,6 @@ MonoBehaviour:
   target: {fileID: 165725436}
   offset: {x: 0, y: 18, z: -10}
   smoothSpeed: 5
---- !u!1 &687441122
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 687441124}
-  - component: {fileID: 687441123}
-  m_Layer: 0
-  m_Name: MovePoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &687441123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687441122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 018164d8d16d06043937850ebceabcc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PoleNode
-  connectedNodes:
-  - {fileID: 1565633824}
-  movePoint: {fileID: 687441124}
---- !u!4 &687441124
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687441122}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1493027344}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &738803264
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,7 +911,7 @@ Transform:
   m_GameObject: {fileID: 1468161977}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.584141, y: 14, z: -21.118296}
+  m_LocalPosition: {x: 10.584141, y: 13.46961, z: -21.118296}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1115,7 +1051,7 @@ GameObject:
   - component: {fileID: 1493027342}
   - component: {fileID: 1493027341}
   m_Layer: 0
-  m_Name: sw L
+  m_Name: sw (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1213,56 +1149,8 @@ Transform:
   m_LocalPosition: {x: 10.44, y: 6.23, z: -20.28}
   m_LocalScale: {x: 1.875, y: 7.7829447, z: 1.875}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 687441124}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1565633823
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1565633825}
-  - component: {fileID: 1565633824}
-  m_Layer: 0
-  m_Name: MovePoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1565633824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565633823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 018164d8d16d06043937850ebceabcc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PoleNode
-  connectedNodes:
-  - {fileID: 687441123}
-  movePoint: {fileID: 1565633825}
---- !u!4 &1565633825
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565633823}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1650044069}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1586067048
 GameObject:
@@ -1356,7 +1244,7 @@ GameObject:
   - component: {fileID: 1650044067}
   - component: {fileID: 1650044066}
   m_Layer: 0
-  m_Name: sw R
+  m_Name: sw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1454,8 +1342,7 @@ Transform:
   m_LocalPosition: {x: 8.83, y: 6.23, z: 13.56}
   m_LocalScale: {x: 1.875, y: 7.7829447, z: 1.875}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1565633825}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807

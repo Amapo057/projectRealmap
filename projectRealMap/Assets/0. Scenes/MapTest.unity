@@ -832,6 +832,7 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+<<<<<<< Updated upstream
 --- !u!114 &871804136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,6 +866,9 @@ MonoBehaviour:
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
 --- !u!1 &915376188
+=======
+--- !u!1 &1047261068
+>>>>>>> Stashed changes
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -872,23 +876,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< Updated upstream
   - component: {fileID: 915376190}
   - component: {fileID: 915376189}
   - component: {fileID: 915376192}
   - component: {fileID: 915376191}
   m_Layer: 0
   m_Name: CinemachineCamera
+=======
+  - component: {fileID: 1047261071}
+  - component: {fileID: 1047261070}
+  - component: {fileID: 1047261069}
+  m_Layer: 0
+  m_Name: ArcGISMap (1)
+>>>>>>> Stashed changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< Updated upstream
 --- !u!114 &915376189
+=======
+--- !u!114 &1047261069
+>>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 915376188}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -927,20 +944,120 @@ MonoBehaviour:
       Anamorphism: 0
   BlendHint: 0
 --- !u!4 &915376190
+=======
+  m_GameObject: {fileID: 1047261068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c703502c1493f5b4eb3e95b2efe0271e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ArcGISMapsSDK::Esri.ArcGISMapsSDK.Components.ArcGISMapComponent
+  dataFetchWithSceneView: 1
+  editorModeEnabled: 1
+  rebaseWithSceneView: 0
+  RootChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  isInitialized: 1
+  apiKey: 
+  basemap: https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/webmaps/arcgis/imagery/standard
+  basemapType: 0
+  basemapAuthentication:
+    ConfigurationIndex: -1
+  basemapAuthenticationType: 1
+  mapElevation:
+    ElevationSources:
+    - Name: Terrain 3D
+      Type: 0
+      Source: https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer
+      IsEnabled: 1
+      Authentication:
+        ConfigurationIndex: -1
+      AuthenticationType: 1
+    ExaggerationFactor: 1
+    MeshModifications:
+      IsEnabled: 1
+      MeshModifications: []
+  enableExtent: 0
+  extent:
+    GeographicCenter:
+      X: 0
+      Y: 0
+      Z: 0
+      SRWkid: 4326
+      SpatialReference:
+        WKID: 4326
+        VerticalWKID: 0
+      version: 1
+    ExtentShape: 2
+    ShapeDimensions:
+      x: 0
+      y: 0
+    UseOriginAsCenter: 0
+  layers: []
+  originPosition:
+    X: 0
+    Y: 0
+    Z: 0
+    SRWkid: 3857
+    SpatialReference:
+      WKID: 3857
+      VerticalWKID: 0
+    version: 1
+  mapType: 1
+  useCustomMapSpatialReference: 0
+  customMapSpatialReference:
+    WKID: 4326
+    VerticalWKID: 0
+  meshCollidersEnabled: 0
+  configurations: []
+  oauthUserConfigurations: []
+  version: 4
+--- !u!114 &1047261070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047261068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265b6a392115d8a4aa7154d8c9356e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Esri.HPFramework::Esri.HPFramework.HPRoot
+  m_LocalPosition:
+    x: 0
+    y: 0
+    z: 0
+  m_LocalRotation:
+    value:
+      x: 0
+      y: 0
+      z: 0
+      w: 1
+--- !u!4 &1047261071
+>>>>>>> Stashed changes
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 915376188}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4201649, y: 0, z: 0, w: 0.90744776}
   m_LocalPosition: {x: 252.4, y: 23.6, z: 255.12999}
+=======
+  m_GameObject: {fileID: 1047261068}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+>>>>>>> Stashed changes
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream
 --- !u!114 &915376191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,6 +1181,9 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9c195c9358bd0b46b22da260e966cb0, type: 3}
 --- !u!1 &1953893756
+=======
+--- !u!1 &2008855459
+>>>>>>> Stashed changes
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1071,23 +1191,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< Updated upstream
   - component: {fileID: 1953893760}
   - component: {fileID: 1953893759}
   - component: {fileID: 1953893758}
   - component: {fileID: 1953893757}
   m_Layer: 0
   m_Name: sw
+=======
+  - component: {fileID: 2008855462}
+  - component: {fileID: 2008855461}
+  - component: {fileID: 2008855460}
+  m_Layer: 0
+  m_Name: ArcGISMap
+>>>>>>> Stashed changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< Updated upstream
 --- !u!65 &1953893757
 BoxCollider:
+=======
+--- !u!114 &2008855460
+MonoBehaviour:
+>>>>>>> Stashed changes
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1953893756}
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1105,10 +1239,82 @@ BoxCollider:
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1953893758
 MeshRenderer:
+=======
+  m_GameObject: {fileID: 2008855459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c703502c1493f5b4eb3e95b2efe0271e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ArcGISMapsSDK::Esri.ArcGISMapsSDK.Components.ArcGISMapComponent
+  dataFetchWithSceneView: 1
+  editorModeEnabled: 1
+  rebaseWithSceneView: 0
+  RootChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  isInitialized: 1
+  apiKey: 
+  basemap: https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/webmaps/arcgis/imagery/standard
+  basemapType: 0
+  basemapAuthentication:
+    ConfigurationIndex: -1
+  basemapAuthenticationType: 1
+  mapElevation:
+    ElevationSources:
+    - Name: Terrain 3D
+      Type: 0
+      Source: https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer
+      IsEnabled: 1
+      Authentication:
+        ConfigurationIndex: -1
+      AuthenticationType: 1
+    ExaggerationFactor: 1
+    MeshModifications:
+      IsEnabled: 1
+      MeshModifications: []
+  enableExtent: 0
+  extent:
+    GeographicCenter:
+      X: 0
+      Y: 0
+      Z: 0
+      SRWkid: 4326
+      SpatialReference:
+        WKID: 4326
+        VerticalWKID: 0
+      version: 1
+    ExtentShape: 2
+    ShapeDimensions:
+      x: 0
+      y: 0
+    UseOriginAsCenter: 0
+  layers: []
+  originPosition:
+    X: 0
+    Y: 0
+    Z: 0
+    SRWkid: 3857
+    SpatialReference:
+      WKID: 3857
+      VerticalWKID: 0
+    version: 1
+  mapType: 1
+  useCustomMapSpatialReference: 0
+  customMapSpatialReference:
+    WKID: 4326
+    VerticalWKID: 0
+  meshCollidersEnabled: 0
+  configurations: []
+  oauthUserConfigurations: []
+  version: 4
+--- !u!114 &2008855461
+MonoBehaviour:
+>>>>>>> Stashed changes
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1953893756}
   m_Enabled: 1
   m_CastShadows: 1
@@ -1161,17 +1367,45 @@ MeshFilter:
   m_GameObject: {fileID: 1953893756}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1953893760
+=======
+  m_GameObject: {fileID: 2008855459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265b6a392115d8a4aa7154d8c9356e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Esri.HPFramework::Esri.HPFramework.HPRoot
+  m_LocalPosition:
+    x: 0
+    y: 0
+    z: 0
+  m_LocalRotation:
+    value:
+      x: 0
+      y: 0
+      z: 0
+      w: 1
+--- !u!4 &2008855462
+>>>>>>> Stashed changes
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 1953893756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.35113, y: 3.18, z: -12.79}
   m_LocalScale: {x: 2.5199997, y: 2.5199997, z: 2.5199997}
   m_ConstrainProportionsScale: 1
+=======
+  m_GameObject: {fileID: 2008855459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+>>>>>>> Stashed changes
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1182,9 +1416,14 @@ SceneRoots:
   - {fileID: 458084010}
   - {fileID: 841026225}
   - {fileID: 809398834}
+<<<<<<< Updated upstream
   - {fileID: 1953893760}
   - {fileID: 529129379}
   - {fileID: 769583773}
   - {fileID: 1316929930}
   - {fileID: 915376190}
   - {fileID: 871804134}
+=======
+  - {fileID: 2008855462}
+  - {fileID: 1047261071}
+>>>>>>> Stashed changes
