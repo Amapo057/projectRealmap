@@ -3,18 +3,18 @@ using UnityEngine.Splines;
 
 public class ElectricPoleMover : MonoBehaviour
 {
-    [Header("ÇöÀç ¼­ ÀÖ´Â Àüº¿´ë ³ëµå")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")]
     [SerializeField] private PoleNode currentNode;
 
-    [Header("ÀÌµ¿ ¼³Á¤")]
+    [Header("ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private float moveSpeed = 8f;
 
-    [Tooltip("ÀÔ·Â ¹æÇâ°ú ÈÄº¸ ³ëµå ¹æÇâÀÌ ÀÌ °ª ÀÌ»ó ºñ½ÁÇØ¾ß ÀÌµ¿ÇÕ´Ï´Ù.")]
+    [Tooltip("ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Äºï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Ìµï¿½ï¿½Õ´Ï´ï¿½.")]
     [Range(0f, 1f)]
     [SerializeField] private float directionThreshold = 0.8f;
 
-    [Header("ÀÔ·Â ±âÁØ")]
-    [Tooltip("ºñ¿öµÎ¸é ¿ùµå ±âÁØ WASD·Î ÀÌµ¿ÇÕ´Ï´Ù. Ä«¸Þ¶ó¸¦ ³ÖÀ¸¸é Ä«¸Þ¶ó ±âÁØ WASD°¡ µË´Ï´Ù.")]
+    [Header("ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    [Tooltip("ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ WASDï¿½ï¿½ ï¿½Ìµï¿½ï¿½Õ´Ï´ï¿½. Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ WASDï¿½ï¿½ ï¿½Ë´Ï´ï¿½.")]
     [SerializeField] private Transform cameraTransform;
 
     private WireConnection currentConnection;

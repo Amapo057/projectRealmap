@@ -4,12 +4,12 @@ using UnityEngine.Splines;
 [System.Serializable]
 public class WireConnection
 {
-    [Header("¿¬°áµÈ ¸ñÀûÁö ³ëµå")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")]
     public PoleNode targetNode;
 
-    [Header("ÀÌ ³ëµå¿Í ¸ñÀûÁö ³ëµå¸¦ ÀÕ´Â Àü¼± Spline")]
+    [Header("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½Õ´ï¿½ ï¿½ï¿½ï¿½ï¿½ Spline")]
     public SplineContainer wireSpline;
 
-    [Header("SplineÀ» ¹İ´ë·Î µû¶ó°¡¾ß ÇÏ´ÂÁö")]
+    [Header("Splineï¿½ï¿½ ï¿½İ´ï¿½ï¿½ ï¿½ï¿½ï¿½ó°¡¾ï¿½ ï¿½Ï´ï¿½ï¿½ï¿½")]
     public bool reverseSpline;
 }

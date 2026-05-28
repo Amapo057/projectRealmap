@@ -2,25 +2,25 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Header("µû¶ó°¥ ´ë»ó")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")]
     public Transform target;
 
-    [Header("Ä«¸Þ¶ó °Å¸®")]
+    [Header("Ä«ï¿½Þ¶ï¿½ ï¿½Å¸ï¿½")]
     public float distance = 16f;
 
-    [Header("Ä«¸Þ¶ó ³ôÀÌ")]
+    [Header("Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public float height = 10f;
 
-    [Header("Ä«¸Þ¶ó ÁÂ¿ì °¢µµ")]
+    [Header("Ä«ï¿½Þ¶ï¿½ ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public float yaw = 0f;
 
-    [Header("¸¶¿ì½º È¸Àü ¼Óµµ")]
+    [Header("ï¿½ï¿½ï¿½ì½º È¸ï¿½ï¿½ ï¿½Óµï¿½")]
     public float mouseSensitivity = 3f;
 
-    [Header("ºÎµå·´°Ô µû¶ó°¡´Â Á¤µµ")]
+    [Header("ï¿½Îµå·´ï¿½ï¿½ ï¿½ï¿½ï¿½ó°¡´ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public float smoothSpeed = 8f;
 
-    [Header("¹Ù¶óº¼ ³ôÀÌ")]
+    [Header("ï¿½Ù¶ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public float lookHeight = 1.5f;
 
     void LateUpdate()
@@ -30,16 +30,16 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        // ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ´©¸¥ »óÅÂ¿¡¼­¸¸ Ä«¸Þ¶ó È¸Àü
+        // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ È¸ï¿½ï¿½
         if (Input.GetMouseButton(1))
         {
             float mouseX = Input.GetAxis("Mouse X");
             yaw += mouseX * mouseSensitivity;
         }
 
-        // Áß¿ä:
-        // PlayerÀÇ forward, rotationÀ» Àý´ë »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù.
-        // ±×·¡¼­ W/S¸¦ ´­·¯µµ Ä«¸Þ¶ó°¡ Player µÚ·Î ÀÚµ¿ ÀÌµ¿ÇÏÁö ¾Ê½À´Ï´Ù.
+        // ï¿½ß¿ï¿½:
+        // Playerï¿½ï¿½ forward, rotationï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.
+        // ï¿½×·ï¿½ï¿½ï¿½ W/Sï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ Player ï¿½Ú·ï¿½ ï¿½Úµï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.
         Quaternion fixedRotation = Quaternion.Euler(0f, yaw, 0f);
 
         Vector3 offset = fixedRotation * new Vector3(0f, height, -distance);
