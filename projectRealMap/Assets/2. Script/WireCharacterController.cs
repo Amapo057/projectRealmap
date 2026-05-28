@@ -4,10 +4,10 @@ using Unity.Mathematics;
 
 public class WireCharacterController : MonoBehaviour
 {
-    [Header("ÀÌµ¿ÇÒ Àü¼±")]
+    [Header("ì´ë™í•  ì „ì„ ")]
     public SplineContainer targetWire;
 
-    [Header("ÀÌµ¿ ¼Óµµ")]
+    [Header("ì´ë™ ì†ë„")]
     [Range(0.1f, 50f)]
     public float moveSpeed = 5f;
 
@@ -24,7 +24,7 @@ public class WireCharacterController : MonoBehaviour
 
         if (targetWire == null)
         {
-            Debug.LogWarning("Target Wire°¡ ºñ¾î ÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("Target Wireê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -92,7 +92,7 @@ public class WireCharacterController : MonoBehaviour
 
         if (success == false)
         {
-            Debug.LogWarning("Spline À§Ä¡ °è»ê ½ÇÆĞ: Target Wire¸¦ È®ÀÎÇÏ¼¼¿ä.");
+            Debug.LogWarning("Spline ìœ„ì¹˜ ê³„ì‚° ì‹¤íŒ¨: Target Wireë¥¼ í™•ì¸í•˜ì„¸ìš”.");
             return;
         }
 
@@ -100,7 +100,7 @@ public class WireCharacterController : MonoBehaviour
 
         if (float.IsNaN(finalPosition.x) || float.IsNaN(finalPosition.y) || float.IsNaN(finalPosition.z))
         {
-            Debug.LogWarning("Àü¼± À§Ä¡°¡ ÀÌ»óÇÕ´Ï´Ù. Spline Á¡À» È®ÀÎÇÏ¼¼¿ä.");
+            Debug.LogWarning("ì „ì„  ìœ„ì¹˜ê°€ ì´ìƒí•©ë‹ˆë‹¤. Spline ì ì„ í™•ì¸í•˜ì„¸ìš”.");
             return;
         }
 

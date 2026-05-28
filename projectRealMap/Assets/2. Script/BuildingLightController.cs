@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BuildingLightController : MonoBehaviour
 {
-    [Header("¹à±â ¼³Á¤")]
+    [Header("ë°ê¸° ì„¤ì •")]
     public Color normalColor = Color.gray;
     public Color poweredColor = Color.yellow;
 
-    [Header("¹à¾ÆÁú °Ç¹° Renderer")]
+    [Header("ë°ì•„ì§ˆ ê±´ë¬¼ Renderer")]
     public Renderer buildingRenderer;
 
     void Start()
