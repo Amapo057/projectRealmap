@@ -375,21 +375,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElectricWireEffect
   effectCenter: {fileID: 738803268}
-  electricLineCount: 8
-  electricityPoints: 4
+  electricLineCount: 12
+  electricityPoints: 5
   bodySparkMinLength: 0.5
   bodySparkMaxLength: 1.1
   tailMinLength: 1.4
   tailMaxLength: 2.4
+  electricJitter: 0.18
   electricStartWidth: 0.08
   electricEndWidth: 0.025
-  movingFlickerRate: 45
-  idleFlickerRate: 25
-  lightningJitter: 0.25
-  tailScatterAmount: 0.12
-  bodyScatterAmount: 0.15
-  tailStartDistance: 0.02
-  movementDetectThreshold: 0.00001
+  noiseSpeed: 18
+  noiseAmount: 0.25
+  idleRefreshTime: 0.04
 --- !u!114 &165725435
 MonoBehaviour:
   m_ObjectHideFlags: 0

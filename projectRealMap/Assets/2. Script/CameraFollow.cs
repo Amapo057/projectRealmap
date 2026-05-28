@@ -5,11 +5,23 @@ public class CameraFollow : MonoBehaviour
     [Header("따라갈 대상")]
     public Transform target;
 
-    [Header("카메라 위치 조절")]
-    public Vector3 offset = new Vector3(0f, 4f, -7f);
+    [Header("카메라 거리")]
+    public float distance = 16f;
+
+    [Header("카메라 높이")]
+    public float height = 10f;
+
+    [Header("카메라 좌우 각도")]
+    public float yaw = 0f;
+
+    [Header("마우스 회전 속도")]
+    public float mouseSensitivity = 3f;
 
     [Header("부드럽게 따라가는 정도")]
-    public float smoothSpeed = 5f;
+    public float smoothSpeed = 8f;
+
+    [Header("바라볼 높이")]
+    public float lookHeight = 1.5f;
 
     void LateUpdate()
     {
@@ -18,14 +30,29 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        Vector3 targetPosition = target.position + offset;
+        // 마우스 오른쪽 버튼을 누른 상태에서만 카메라 회전
+        if (Input.GetMouseButton(1))
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+            yaw += mouseX * mouseSensitivity;
+        }
+
+        // 중요:
+        // Player의 forward, rotation을 절대 사용하지 않습니다.
+        // 그래서 W/S를 눌러도 카메라가 Player 뒤로 자동 이동하지 않습니다.
+        Quaternion fixedRotation = Quaternion.Euler(0f, yaw, 0f);
+
+        Vector3 offset = fixedRotation * new Vector3(0f, height, -distance);
+
+        Vector3 desiredPosition = target.position + offset;
 
         transform.position = Vector3.Lerp(
             transform.position,
-            targetPosition,
+            desiredPosition,
             smoothSpeed * Time.deltaTime
         );
 
-        transform.LookAt(target);
+        Vector3 lookTarget = target.position + Vector3.up * lookHeight;
+        transform.LookAt(lookTarget);
     }
 }

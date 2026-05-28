@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class ElectricPoleMover : MonoBehaviour
 {
@@ -10,24 +11,23 @@ public class ElectricPoleMover : MonoBehaviour
 
     [Tooltip("입력 방향과 후보 노드 방향이 이 값 이상 비슷해야 이동합니다.")]
     [Range(0f, 1f)]
-    [SerializeField] private float directionThreshold = 0.5f;
+    [SerializeField] private float directionThreshold = 0.8f;
 
     [Header("입력 기준")]
     [Tooltip("비워두면 월드 기준 WASD로 이동합니다. 카메라를 넣으면 카메라 기준 WASD가 됩니다.")]
     [SerializeField] private Transform cameraTransform;
 
-    private PoleNode targetNode;
+    private WireConnection currentConnection;
     private bool isMoving;
 
-    private ElectricWireEffect electricEffect;
+    private float splineProgress;
+    private float splineMoveDirection;
 
     public PoleNode CurrentNode => currentNode;
     public bool IsMoving => isMoving;
 
     private void Start()
     {
-        electricEffect = GetComponent<ElectricWireEffect>();
-
         if (currentNode != null)
         {
             transform.position = currentNode.Position;
@@ -43,19 +43,8 @@ public class ElectricPoleMover : MonoBehaviour
     {
         if (isMoving)
         {
-            MoveToTarget();
-
-            if (electricEffect != null)
-            {
-                electricEffect.PlayMovingElectricity(1f);
-            }
-
+            MoveAlongSpline();
             return;
-        }
-
-        if (electricEffect != null)
-        {
-            electricEffect.PlayIdleElectricity();
         }
 
         Vector3 inputDirection = GetInputDirection();
@@ -65,12 +54,34 @@ public class ElectricPoleMover : MonoBehaviour
             return;
         }
 
-        PoleNode nextNode = FindBestNode(inputDirection);
+        WireConnection nextConnection = FindBestConnection(inputDirection);
 
-        if (nextNode != null)
+        if (nextConnection != null && nextConnection.targetNode != null && nextConnection.wireSpline != null)
         {
-            targetNode = nextNode;
-            isMoving = true;
+            StartSplineMove(nextConnection);
+        }
+    }
+
+    private void StartSplineMove(WireConnection connection)
+    {
+        currentConnection = connection;
+        isMoving = true;
+
+        Vector3 splineStart = currentConnection.wireSpline.EvaluatePosition(0f);
+        Vector3 splineEnd = currentConnection.wireSpline.EvaluatePosition(1f);
+
+        float distanceToStart = Vector3.Distance(currentNode.Position, splineStart);
+        float distanceToEnd = Vector3.Distance(currentNode.Position, splineEnd);
+
+        if (distanceToStart <= distanceToEnd)
+        {
+            splineProgress = 0f;
+            splineMoveDirection = 1f;
+        }
+        else
+        {
+            splineProgress = 1f;
+            splineMoveDirection = -1f;
         }
     }
 
@@ -117,33 +128,38 @@ public class ElectricPoleMover : MonoBehaviour
         return new Vector3(input.x, 0f, input.y).normalized;
     }
 
-    private PoleNode FindBestNode(Vector3 inputDirection)
+    private WireConnection FindBestConnection(Vector3 inputDirection)
     {
-        if (currentNode == null || currentNode.connectedNodes == null)
+        if (currentNode == null || currentNode.connections == null)
         {
             return null;
         }
 
-        PoleNode bestNode = null;
+        WireConnection bestConnection = null;
         float bestScore = float.MinValue;
 
-        foreach (PoleNode candidate in currentNode.connectedNodes)
+        foreach (WireConnection connection in currentNode.connections)
         {
-            if (candidate == null)
+            if (connection == null)
             {
                 continue;
             }
 
-            Vector3 directionToCandidate = candidate.Position - currentNode.Position;
-            directionToCandidate.y = 0f;
-
-            if (directionToCandidate.sqrMagnitude <= 0.001f)
+            if (connection.targetNode == null)
             {
                 continue;
             }
 
-            float distance = directionToCandidate.magnitude;
-            float dot = Vector3.Dot(inputDirection.normalized, directionToCandidate.normalized);
+            Vector3 directionToTarget = connection.targetNode.Position - currentNode.Position;
+            directionToTarget.y = 0f;
+
+            if (directionToTarget.sqrMagnitude <= 0.001f)
+            {
+                continue;
+            }
+
+            float distance = directionToTarget.magnitude;
+            float dot = Vector3.Dot(inputDirection.normalized, directionToTarget.normalized);
 
             if (dot < directionThreshold)
             {
@@ -155,54 +171,63 @@ public class ElectricPoleMover : MonoBehaviour
             if (score > bestScore)
             {
                 bestScore = score;
-                bestNode = candidate;
+                bestConnection = connection;
             }
         }
 
-        return bestNode;
+        return bestConnection;
     }
 
-    private void MoveToTarget()
+    private void MoveAlongSpline()
     {
-        if (targetNode == null)
+        if (currentConnection == null || currentConnection.wireSpline == null)
         {
             isMoving = false;
             return;
         }
 
-        Vector3 direction = targetNode.Position - transform.position;
+        float wireLength = currentConnection.wireSpline.CalculateLength();
 
-        if (direction.sqrMagnitude > 0.001f)
+        if (wireLength <= 0.01f)
         {
-            Vector3 lookDirection = direction;
-            lookDirection.y = 0f;
-
-            if (lookDirection.sqrMagnitude > 0.001f)
-            {
-                transform.rotation = Quaternion.LookRotation(lookDirection);
-            }
-        }
-
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetNode.Position,
-            moveSpeed * Time.deltaTime
-        );
-
-        if (Vector3.Distance(transform.position, targetNode.Position) <= 0.05f)
-        {
-            transform.position = targetNode.Position;
-            currentNode = targetNode;
-            targetNode = null;
             isMoving = false;
+            return;
         }
+
+        float moveAmount = (moveSpeed / wireLength) * Time.deltaTime;
+
+        splineProgress += splineMoveDirection * moveAmount;
+        splineProgress = Mathf.Clamp01(splineProgress);
+
+        Vector3 splinePosition = currentConnection.wireSpline.EvaluatePosition(splineProgress);
+        transform.position = splinePosition;
+
+        if (splineProgress <= 0f || splineProgress >= 1f)
+        {
+            FinishMove();
+        }
+    }
+
+    private void FinishMove()
+    {
+        if (currentConnection != null && currentConnection.targetNode != null)
+        {
+            currentNode = currentConnection.targetNode;
+            transform.position = currentNode.Position;
+        }
+
+        currentConnection = null;
+        isMoving = false;
+        splineMoveDirection = 0f;
     }
 
     public void SetCurrentNode(PoleNode node, bool snapToNode = true)
     {
         currentNode = node;
-        targetNode = null;
+        currentConnection = null;
         isMoving = false;
+        splineProgress = 0f;
+        splineMoveDirection = 0f;
 
         if (snapToNode && currentNode != null)
         {
