@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class PoleNode : MonoBehaviour
 {
@@ -28,18 +29,60 @@ public class PoleNode : MonoBehaviour
         movePoint = transform;
     }
 
+    public void ClearConnections()
+    {
+        if (connections == null)
+        {
+            connections = new List<WireConnection>();
+        }
+
+        connections.Clear();
+    }
+
+    public void AddConnection(PoleNode targetNode, SplineContainer wireSpline, bool reverseSpline = false)
+    {
+        if (targetNode == null)
+        {
+            return;
+        }
+
+        if (wireSpline == null)
+        {
+            return;
+        }
+
+        if (connections == null)
+        {
+            connections = new List<WireConnection>();
+        }
+
+        for (int i = connections.Count - 1; i >= 0; i--)
+        {
+            WireConnection connection = connections[i];
+
+            if (connection == null)
+            {
+                connections.RemoveAt(i);
+                continue;
+            }
+
+            if (connection.targetNode == targetNode)
+            {
+                connections.RemoveAt(i);
+            }
+        }
+
+        WireConnection newConnection = new WireConnection();
+        newConnection.targetNode = targetNode;
+        newConnection.wireSpline = wireSpline;
+        newConnection.reverseSpline = reverseSpline;
+
+        connections.Add(newConnection);
+    }
+
     private void OnDrawGizmos()
     {
-        Vector3 start;
-
-        if (movePoint != null)
-        {
-            start = movePoint.position;
-        }
-        else
-        {
-            start = transform.position;
-        }
+        Vector3 start = Position;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(start, 0.25f);
@@ -63,8 +106,7 @@ public class PoleNode : MonoBehaviour
                 continue;
             }
 
-            Vector3 end = connection.targetNode.Position;
-            Gizmos.DrawLine(start, end);
+            Gizmos.DrawLine(start, connection.targetNode.Position);
         }
     }
 }
