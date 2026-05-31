@@ -380,7 +380,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467545096}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.42261863, y: -0, z: -0, w: 0.90630764}
+  m_LocalRotation: {x: 0.4226186, y: -0, z: -0, w: 0.90630764}
   m_LocalPosition: {x: -220.4, y: 92.7, z: -252.20001}
   m_LocalScale: {x: 0.9999997, y: 1, z: 0.99999976}
   m_ConstrainProportionsScale: 0
@@ -401,8 +401,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ArcGISMapsSDK::Esri.ArcGISMapsSDK.Components.ArcGISLocationComponent
   isInitialized: 1
   position:
-    X: 126.98038511316862
-    Y: 37.556738005622435
+    X: 127.47902011316862
+    Y: 34.96724344747907
     Z: 92.69999694824219
     SRWkid: 4326
     SpatialReference:
@@ -411,7 +411,7 @@ MonoBehaviour:
     version: 1
   rotation:
     Heading: 0
-    Pitch: 39.99995214831438
+    Pitch: 39.99996145418237
     Roll: 0
   surfacePlacementMode: 0
   surfacePlacementOffset: 0
@@ -449,15 +449,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Esri.HPFramework::Esri.HPFramework.HPTransform
   m_IsInitialized: 1
   m_LocalPosition:
-    x: 14135391.811531708
+    x: 14190899.60582341
     y: 92.69999694824219
-    z: 4516995.622215455
+    z: 4159430.5499385786
   m_LocalRotation:
     value:
-      x: 0.42261863
+      x: 0.4226186
       y: 0
       z: 0
-      w: 0.90630764
+      w: 0.9063076
   m_LocalScale:
     x: 0.9999997
     y: 1
@@ -494,84 +494,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!1001 &616222860
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2038242173}
-    m_Modifications:
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2500001
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.2499999
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1616
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 83
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8771091787928289351, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-      propertyPath: m_Name
-      value: building
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: -4161369568681901532, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
---- !u!4 &616222861 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -3910990755373119420, guid: cca6b39ec44d54c43947d54de67c3d89, type: 3}
-  m_PrefabInstance: {fileID: 616222860}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,8 +732,8 @@ MonoBehaviour:
   enableExtent: 1
   extent:
     GeographicCenter:
-      X: 126.982365
-      Y: 37.558534
+      X: 127.481
+      Y: 34.9691
       Z: 0
       SRWkid: 4326
       SpatialReference:
@@ -820,7 +742,7 @@ MonoBehaviour:
       version: 1
     ExtentShape: 0
     ShapeDimensions:
-      x: 3000
+      x: 1200
       y: 0
     UseOriginAsCenter: 0
   layers:
@@ -847,8 +769,8 @@ MonoBehaviour:
       Polygons: []
       Type: 0
   originPosition:
-    X: 126.982365
-    Y: 37.558534
+    X: 127.481
+    Y: 34.9691
     Z: 0
     SRWkid: 4326
     SpatialReference:
@@ -877,9 +799,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Esri.HPFramework::Esri.HPFramework.HPRoot
   m_LocalPosition:
-    x: 14135612.211525604
+    x: 14191120.005817307
     y: 0
-    z: 4517247.822227662
+    z: 4159682.7499507857
   m_LocalRotation:
     value:
       x: 0
@@ -902,38 +824,6 @@ Transform:
   - {fileID: 467545100}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2038242172
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2038242173}
-  m_Layer: 0
-  m_Name: building_controler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2038242173
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038242172}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 616222861}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -942,4 +832,3 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1433831026}
   - {fileID: 1045772164}
-  - {fileID: 2038242173}
